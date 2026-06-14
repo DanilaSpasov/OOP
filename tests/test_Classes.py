@@ -8,19 +8,16 @@ def tomato():
     return Product("tomato", "It's a tomato", 50, 1)
 
 
-@pytest.fixture()
-def cucumber():
-    return Product("cucumber", "It's a cucumber", 30, 1)
-
 
 @pytest.fixture()
-def vegetables():
-    return Category("vegetables", "not fruits", ["tomato", "cucumber"])
+def vegetables(tomato):
+    return Category("vegetables", "not fruits", [tomato])
 
 
 @pytest.fixture(autouse=True)
-def reset_product_count():
-    Product.product_count = 0
+def reset_count():
+    Category.product_count = 0
+    Category.category_count = 0
 
 
 def test_init_Product(tomato):
@@ -30,19 +27,14 @@ def test_init_Product(tomato):
     assert tomato.quantity == 1
 
 
-def test_init_Category(vegetables):
+def test_init_Category(vegetables, tomato):
     assert vegetables.name == "vegetables"
     assert vegetables.description == "not fruits"
-    assert vegetables.products == ["tomato", "cucumber"]
+    assert vegetables.products == [tomato]
 
 
-def test_product_count(tomato, cucumber):
-    assert Product.product_count == 2
+def test_category_count(tomato, vegetables):
+    assert Category.product_count == 1
+    assert Category.category_count == 1
 
 
-def test_product_count_tomato(tomato):
-    assert Product.product_count == 1
-
-
-def test_product_count_cucumber(cucumber):
-    assert Product.product_count == 1
