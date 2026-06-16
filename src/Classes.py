@@ -4,7 +4,6 @@ class Product:
     price: float
     quantity: int
 
-
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
@@ -25,7 +24,7 @@ class Product:
         return self.__price
 
     @price.setter
-    def price(self, price ):
+    def price(self, price):
         if price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         elif price < self.__price:
@@ -54,6 +53,7 @@ class Category:
 
     def add_product(self, product):
         self.__products.append(product)
+        Category.product_count += 1
 
     @property
     def products(self):
