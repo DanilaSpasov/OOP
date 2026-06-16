@@ -1,12 +1,12 @@
 import pytest
 
-from src.Classes import Category, Product
+from src.Classes import Category
+from src.Classes import Product
 
 
 @pytest.fixture()
 def tomato():
     return Product("tomato", "It's a tomato", 50, 1)
-
 
 
 @pytest.fixture()
@@ -30,7 +30,7 @@ def test_init_Product(tomato):
 def test_init_Category(vegetables, tomato):
     assert vegetables.name == "vegetables"
     assert vegetables.description == "not fruits"
-    assert vegetables.products == [tomato]
+    assert vegetables.products == "tomato, 50 руб. Остаток: 1 шт."
 
 
 def test_category_count(tomato, vegetables):
@@ -38,3 +38,18 @@ def test_category_count(tomato, vegetables):
     assert Category.category_count == 1
 
 
+def test_setter_price(tomato):
+    tomato.price = -100
+    assert tomato.price == 50
+
+    tomato.price = 0
+    assert tomato.price == 50
+
+    tomato.price = 100
+    assert tomato.price == 100
+
+
+def test_add_product(vegetables):
+    cucumber = Product("cucumber", "It's a cucumber", 40, 1)
+    vegetables.add_product(cucumber)
+    assert "cucumber, 40 руб. Остаток: 1 шт." in vegetables.products
