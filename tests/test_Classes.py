@@ -1,6 +1,6 @@
 import pytest
 
-from src.Classes import Category
+from src.Classes import Category, Smartphone, LawnGrass
 from src.Classes import Product
 
 
@@ -66,3 +66,22 @@ def test_str_category(vegetables, tomato):
 def test_add_two_products(tomato):
     cucumber = Product("cucumber", "It's a cucumber", 40, 5)
     assert tomato + cucumber == 250
+
+def test_add_smartphones():
+    samsung = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
+                         "S23 Ultra", 256, "Серый")
+    iphone = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+
+    assert samsung + iphone == 2580000
+
+def test_add_smartphone_and_grass():
+    iphone = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+    russian_grass = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+
+    with pytest.raises(TypeError):
+        iphone + russian_grass
+
+def test_add_bad_product():
+    with pytest.raises(TypeError):
+        Category.add_product("not a product")
+
