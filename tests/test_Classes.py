@@ -53,3 +53,16 @@ def test_add_product(vegetables):
     cucumber = Product("cucumber", "It's a cucumber", 40, 1)
     vegetables.add_product(cucumber)
     assert "cucumber, 40 руб. Остаток: 1 шт." in vegetables.products
+
+
+def test_str_product(tomato):
+    assert str(tomato) == "tomato, 50 руб. Остаток: 1 шт."
+
+
+def test_str_category(vegetables, tomato):
+    assert str(vegetables) == "vegetables, количество продуктов: 1 шт."
+
+
+def test_add_two_products(tomato):
+    cucumber = Product("cucumber", "It's a cucumber", 40, 5)
+    assert tomato + cucumber == 250
