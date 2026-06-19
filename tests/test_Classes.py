@@ -85,3 +85,7 @@ def test_add_bad_product():
     with pytest.raises(TypeError):
         Category.add_product("not a product")
 
+
+def test_mixin_log(tomato):
+    assert repr(tomato) == "Product(tomato,It's a tomato, 50, 1)"
+
