@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 
+
 class BaseProduct(ABC):
     @classmethod
     @abstractmethod
     def new_product(cls, product_dict):
         pass
+
 
 class MixinLog:
     def __init__(self, *args, **kwargs):
@@ -13,8 +15,6 @@ class MixinLog:
     def __repr__(self):
 
         return f"{self.__class__.__name__}({self.name},{self.description}, {self.price}, {self.quantity})"
-
-
 
 
 class Product(MixinLog, BaseProduct):
@@ -28,6 +28,8 @@ class Product(MixinLog, BaseProduct):
         self.name = name
         self.description = description
         self.__price = price
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.quantity = quantity
 
     @classmethod
@@ -58,11 +60,9 @@ class Product(MixinLog, BaseProduct):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if type(self) == type(other):
+        if type(self) is type(other):
             return self.price * self.quantity + other.price * other.quantity
         raise TypeError
-
-
 
 
 class Category:
@@ -102,6 +102,15 @@ class Category:
             summary += product.quantity
         return f"{self.name}, количество продуктов: {summary} шт."
 
+    def middle_price(self):
+        summary = 0
+        for product in self.__products:
+            summary += product.price
+        try:
+            return summary / Category.product_count
+        except ZeroDivisionError:
+            return 0
+
 
 class Smartphone(Product):
     efficiency: float
@@ -109,11 +118,10 @@ class Smartphone(Product):
     memory: int
     color: str
 
-
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
-        self. model = model
+        self.model = model
         self.memory = memory
         self.color = color
 
@@ -128,7 +136,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-
-
-
